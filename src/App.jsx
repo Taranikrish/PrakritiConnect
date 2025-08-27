@@ -5,7 +5,7 @@ import Event from "./Pages/Event";
 import Events from "./Pages/Events";
 import Organizations from "./Pages/Organizations";
 import About from "./Pages/About";
-import OrganizerSignup from "./Component/OrganizerSignUp";
+import OrganizerSignup from "./Component/OrganizerSignup";
 import VolunteerSignup from "./Component/VolunteerSignup";
 import Login from "./Component/Login";
 import OrganizerDashboard from "./Component/OrganizerDashboard";
@@ -47,8 +47,8 @@ function App() {
                 <Event />
               </ProtectedRoute>
             } />
-            <Route path="/OrganizerSignUp" element={<OrganizerSignup/>}/>
-            <Route path="/VolunteerSignUp" element={<VolunteerSignup/>}/>
+            <Route path="/organizer-signup" element={<OrganizerSignup/>}/>
+            <Route path="/volunteer-signup" element={<VolunteerSignup/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/organizer-dashboard/:orgId" element={
               <ProtectedRoute requiredRole="organizer">
@@ -70,12 +70,12 @@ function App() {
                 <Settings/>
               </ProtectedRoute>
             }/>
-            <Route path="/Create-Event" element={
+            <Route path="/create-event" element={
               <ProtectedRoute requiredRole="organizer">
                 <CreateEvent/>
               </ProtectedRoute>
             }/>
-            <Route path="/Create-Event/:orgId" element={
+            <Route path="/create-event/:orgId" element={
               <ProtectedRoute requiredRole="organizer">
                 <CreateEvent/>
               </ProtectedRoute>

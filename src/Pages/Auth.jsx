@@ -39,14 +39,14 @@ const Auth = () => {
           <div className="flex flex-col gap-3 max-w-[480px] w-full mx-auto">
             <button onClick={(e)=>{
               e.preventDefault();
-              handleNavigation("/OrganizerSignUp");
+              handleNavigation("/organizer-signup");
             }}
             className="h-10 rounded-lg hover:bg-[#14b881] bg-[#e7f3ef]  text-[#0e1b17] text-sm font-bold transition-colors duration-500 cursor-pointer">
               Sign up as Organizer
             </button>
             <button onClick={(e)=>{
               e.preventDefault();
-              handleNavigation("/VolunteerSignUp");
+              handleNavigation("/volunteer-signup");
             }}
             className="h-10 rounded-lg hover:bg-[#14b881] bg-[#e7f3ef] text-[#0e1b17] text-sm font-bold transition-colors duration-500 cursor-pointer" >
               Sign up as Volunteer

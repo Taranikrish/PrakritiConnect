@@ -72,7 +72,7 @@ const OrganizerDashboard = ({ viewOnly = false }) => {
   };
 
   const handleCreateEvent = () => {
-    navigate(orgId ? `/Create-Event/${orgId}` : "/Create-Event");
+    navigate(orgId ? `/create-event/${orgId}` : "/create-event");
   };
 
   const handleViewEvent = (eventId) => {
