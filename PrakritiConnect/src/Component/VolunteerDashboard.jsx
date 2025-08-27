@@ -10,6 +10,7 @@ const VolunteerDashboard = () => {
   const [activeMenu, setActiveMenu] = useState("Dashboard");
   const [participatedEvents, setParticipatedEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const menuItems = [
     { label: "Dashboard", active: activeMenu === "Dashboard" },
@@ -105,6 +106,7 @@ const VolunteerDashboard = () => {
 
   const handleMenuClick = (label) => {
     setActiveMenu(label);
+    setIsMobileMenuOpen(false);
     if (label === "Settings") {
       navigate("/settings");
     }
@@ -165,19 +167,37 @@ const VolunteerDashboard = () => {
       style={{ fontFamily: '"Plus Jakarta Sans", "Noto Sans", sans-serif' }}
     >
       <div className="layout-container flex h-full grow flex-col">
-        <div className="gap-1 px-6 flex flex-1 justify-center py-5">
+        {/* Mobile Menu Button */}
+        <div className="md:hidden p-4">
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 rounded-md text-[#0e1b17] hover:bg-[#e7f3ef] transition-colors"
+            aria-label="Toggle menu"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div className="gap-1 px-4 md:px-6 flex flex-1 justify-center py-5">
           {/* Sidebar */}
-          <div className="layout-content-container flex flex-col w-80">
+          <div className={`layout-content-container flex-col w-80 ${isMobileMenuOpen ? 'flex' : 'hidden'} md:flex`}>
             <div className="flex h-full min-h-[700px] flex-col justify-between bg-[#f8fcfa] p-4">
               <div className="flex flex-col gap-4">
                 {/* Profile */}
                 <div className="flex gap-3">
-                  <div
-                    className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
-                    style={{
-                      backgroundImage: `url("https://example.com/profile.jpg")`,
-                    }}
-                  ></div>
                   <div className="flex flex-col">
                     <h1 className="text-[#0e1b17] text-base font-medium leading-normal">
                       {user?.fullName || "Volunteer"}
@@ -213,7 +233,7 @@ const VolunteerDashboard = () => {
             {/* Header */}
             <div className="flex flex-wrap justify-between gap-3 p-4">
               <div className="flex min-w-72 flex-col gap-3">
-                <p className="text-[#0e1b17] text-[32px] font-bold leading-tight">
+                <p className="text-[#0e1b17] text-2xl md:text-[32px] font-bold leading-tight">
                   Volunteer Dashboard
                 </p>
                 <p className="text-[#4e977f] text-sm font-normal leading-normal">
@@ -230,12 +250,12 @@ const VolunteerDashboard = () => {
               ].map((stat, i) => (
                 <div
                   key={i}
-                  className="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#d0e7df]"
+                  className="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-4 md:p-6 border border-[#d0e7df]"
                 >
-                  <p className="text-[#0e1b17] text-base font-medium leading-normal">
+                  <p className="text-[#0e1b17] text-sm md:text-base font-medium leading-normal">
                     {stat.label}
                   </p>
-                  <p className="text-[#0e1b17] text-2xl font-bold leading-tight">
+                  <p className="text-[#0e1b17] text-xl md:text-2xl font-bold leading-tight">
                     {stat.value}
                   </p>
                 </div>
@@ -243,56 +263,102 @@ const VolunteerDashboard = () => {
             </div>
 
             {/* Events I've Participated In */}
-            <h2 className="text-[#0e1b17] text-[22px] font-bold px-4 pb-3 pt-5">
+            <h2 className="text-[#0e1b17] text-xl md:text-[22px] font-bold px-4 pb-3 pt-5">
               My Volunteering History
             </h2>
             <div className="px-4 py-3">
-              <div className="flex overflow-hidden rounded-lg border border-[#d0e7df] bg-[#f8fcfa]">
-                <table className="flex-1">
-                  <thead>
-                    <tr className="bg-[#f8fcfa]">
-                      {["Event Name", "Date", "Location", "Status", "Actions"].map(
-                        (h, i) => (
-                          <th
-                            key={i}
-                            className="px-4 py-3 text-left text-[#0e1b17] text-sm font-medium"
-                          >
-                            {h}
-                          </th>
-                        )
-                      )}
-                    </tr>
-                  </thead>
-                  <tbody>
+              {loading ? (
+                <div className="text-center py-8 text-[#4e977f]">Loading events...</div>
+              ) : participatedEvents.length === 0 ? (
+                <div className="text-center py-8 text-[#4e977f]">
+                  No events participated yet. Find events to get started!
+                </div>
+              ) : (
+                <div className="overflow-auto scrollbar-hide rounded-lg border border-[#d0e7df] bg-white">
+                  {/* Mobile View */}
+                  <div className="md:hidden space-y-4 p-4">
                     {participatedEvents.map((event, i) => (
-                      <tr key={i} className="border-t border-t-[#d0e7df]">
-                        <td className="px-4 py-2 text-sm text-[#0e1b17]">{event.eventName || event.name}</td>
-                        <td className="px-4 py-2 text-sm text-[#4e977f]">{event.startDate || event.date || event.dateTime}</td>
-                        <td className="px-4 py-2 text-sm text-[#4e977f]">
-                          {event.location}
-                        </td>
-                        <td className="px-4 py-2">
-                          <button className={`flex items-center justify-center rounded-lg h-8 px-4 text-sm font-medium ${
-                            event.status === "Completed" 
-                              ? "bg-[#e7f3ef] text-[#0e1b17]" 
-                              : "bg-[#14b881] text-white"
-                          }`}>
-                            {event.status}
-                          </button>
-                        </td>
-                        <td className="px-4 py-2">
-                          <button 
-                            onClick={() => handleViewEvent(event.id)}
-                            className="px-3 py-1 text-sm bg-[#14b881] text-white rounded hover:bg-[#0e9c6d] transition"
-                          >
-                            View
-                          </button>
-                        </td>
-                      </tr>
+                      <div key={i} className="border border-[#d0e7df] rounded-lg p-4">
+                        <div className="text-sm font-medium text-[#0e1b17] mb-2">
+                          {event.eventName || event.name}
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                          <div>
+                            <div className="text-[#4e977f]">Date</div>
+                            <div>{event.startDate || event.date || event.dateTime}</div>
+                          </div>
+                          <div>
+                            <div className="text-[#4e977f]">Location</div>
+                            <div>{event.location}</div>
+                          </div>
+                          <div>
+                            <div className="text-[#4e977f]">Status</div>
+                            <button className={`flex items-center justify-center rounded-lg h-8 px-4 text-sm font-medium ${
+                              event.status === "Completed" 
+                                ? "bg-[#e7f3ef] text-[#0e1b17]" 
+                                : "bg-[#14b881] text-white"
+                            }`}>
+                              {event.status}
+                            </button>
+                          </div>
+                        </div>
+                        <button 
+                          onClick={() => handleViewEvent(event.id)}
+                          className="w-full px-3 py-1 text-sm bg-[#14b881] text-white rounded hover:bg-[#0e9c6d] transition"
+                        >
+                          View Event
+                        </button>
+                      </div>
                     ))}
-                  </tbody>
-                </table>
-              </div>
+                  </div>
+                  
+                  {/* Desktop View */}
+                  <table className="hidden md:table w-full">
+                    <thead>
+                      <tr className="bg-[#f8fcfa]">
+                        {["Event Name", "Date", "Location", "Status", "Actions"].map(
+                          (h, i) => (
+                            <th
+                              key={i}
+                              className="px-4 py-3 text-left text-[#0e1b17] text-sm font-medium"
+                            >
+                              {h}
+                            </th>
+                          )
+                        )}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {participatedEvents.map((event, i) => (
+                        <tr key={i} className="border-t border-t-[#d0e7df]">
+                          <td className="px-4 py-2 text-sm text-[#0e1b17]">{event.eventName || event.name}</td>
+                          <td className="px-4 py-2 text-sm text-[#4e977f]">{event.startDate || event.date || event.dateTime}</td>
+                          <td className="px-4 py-2 text-sm text-[#4e977f]">
+                            {event.location}
+                          </td>
+                          <td className="px-4 py-2">
+                            <button className={`flex items-center justify-center rounded-lg h-8 px-4 text-sm font-medium ${
+                              event.status === "Completed" 
+                                ? "bg-[#e7f3ef] text-[#0e1b17]" 
+                                : "bg-[#14b881] text-white"
+                            }`}>
+                              {event.status}
+                            </button>
+                          </td>
+                          <td className="px-4 py-2">
+                            <button 
+                              onClick={() => handleViewEvent(event.id)}
+                              className="px-3 py-1 text-sm bg-[#14b881] text-white rounded hover:bg-[#0e9c6d] transition"
+                            >
+                              View
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
 
             {/* Find More Events Button */}

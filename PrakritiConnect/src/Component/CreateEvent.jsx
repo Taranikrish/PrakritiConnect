@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useSelector } from 'react-redux';
@@ -68,7 +68,7 @@ export default function CreateEvent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fcfa] p-8">
+    <div className="min-h-screen bg-[#f8fcfa] p-4 md:p-8">
       <div className="max-w-4xl mx-auto bg-white rounded-lg p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-[#0e1b17] text-2xl font-bold">Create New Event</h2>
@@ -114,7 +114,7 @@ export default function CreateEvent() {
           </div>
 
           {/* Dates */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-[#0e1b17] text-base font-medium block mb-2">
                 Start Date
@@ -201,7 +201,7 @@ export default function CreateEvent() {
           )}
 
           {/* Buttons */}
-          <div className="flex gap-4 pt-4">
+          <div className="flex flex-col md:flex-row gap-4 pt-4">
             <button
               type="button"
               onClick={() => navigate(orgId ? `/organizer-dashboard/${orgId}` : `/organizer-dashboard/${user?.uid}`)}
@@ -212,7 +212,7 @@ export default function CreateEvent() {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-[#14b881] text-white rounded-lg py-3 font-medium hover:bg-[#0e9c6d] transition disabled:opacity-50"
+              className="flex-1 bg-[#14b881] text-white rounded-lg py-3 font-medium hover:bg-[#0fa36d] transition disabled:opacity-50"
             >
               {loading ? "Creating..." : "Create Event"}
             </button>

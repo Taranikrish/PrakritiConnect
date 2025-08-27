@@ -104,9 +104,9 @@ const Events = () => {
     <div className="relative flex min-h-screen flex-col bg-[#f8fcfa] font-['Plus Jakarta Sans','Noto Sans',sans-serif]">
       <Header isAuthenticated={true} />
       
-      <div className="px-40 flex flex-1 justify-center py-5">
+      <div className="px-4 md:px-8 lg:px-40 flex flex-1 justify-center py-5">
         <div className="w-full max-w-6xl">
-          <h1 className="text-[#0e1b17] text-3xl font-bold text-center mb-8">
+          <h1 className="text-[#0e1b17] text-2xl md:text-3xl font-bold text-center mb-8">
             Upcoming Events
           </h1>
           
@@ -115,7 +115,7 @@ const Events = () => {
               <p className="text-[#4e977f] text-lg">No upcoming events found.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {events.map((event) => (
                 <div
                   key={event.id}
@@ -134,7 +134,7 @@ const Events = () => {
                     </p>
                     
                     {/* Event Title */}
-                    <h3 className="text-[#0e1b17] text-xl font-bold mb-2">
+                    <h3 className="text-[#0e1b17] text-lg md:text-xl font-bold mb-2">
                       {event.eventName}
                     </h3>
                     

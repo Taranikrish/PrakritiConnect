@@ -28,6 +28,18 @@ export const validationRules = {
   eventName: {
     pattern: /^.{3,}$/,
     message: "Event name must be at least 3 characters"
+  },
+  date: {
+    pattern: /^\d{4}-\d{2}-\d{2}$/,
+    message: "Please enter a valid date in YYYY-MM-DD format"
+  },
+  startDate: {
+    pattern: /^\d{4}-\d{2}-\d{2}$/,
+    message: "Please enter a valid start date in YYYY-MM-DD format"
+  },
+  endDate: {
+    pattern: /^\d{4}-\d{2}-\d{2}$/,
+    message: "Please enter a valid end date in YYYY-MM-DD format"
   }
 };
 
@@ -58,6 +70,17 @@ export const validateForm = (formData, fieldsToValidate) => {
     }
   });
 
+  // Custom validation for endDate being after startDate
+  if (formData.startDate && formData.endDate) {
+    const startDate = new Date(formData.startDate);
+    const endDate = new Date(formData.endDate);
+    
+    if (endDate < startDate) {
+      errors.endDate = "End date must be after start date";
+      isValid = false;
+    }
+  }
+
   return { isValid, errors };
 };
 
@@ -75,5 +98,5 @@ export const validateOrganizerForm = (formData) => {
 };
 
 export const validateEventForm = (formData) => {
-  return validateForm(formData, ['eventName', 'maxParticipants']);
+  return validateForm(formData, ['eventName', 'startDate', 'endDate', 'maxParticipants']);
 };

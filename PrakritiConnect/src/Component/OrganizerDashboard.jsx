@@ -13,6 +13,7 @@ const OrganizerDashboard = ({ viewOnly = false }) => {
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
   const [organization, setOrganization] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const menuItems = [
     { label: "Dashboard", active: activeMenu === "Dashboard" },
@@ -64,6 +65,7 @@ const OrganizerDashboard = ({ viewOnly = false }) => {
 
   const handleMenuClick = (label) => {
     setActiveMenu(label);
+    setIsMobileMenuOpen(false);
     if (label === "Settings") {
       navigate("/settings");
     }
@@ -136,19 +138,38 @@ const OrganizerDashboard = ({ viewOnly = false }) => {
       style={{ fontFamily: '"Plus Jakarta Sans", "Noto Sans", sans-serif' }}
     >
       <div className="layout-container flex h-full grow flex-col">
-        <div className="gap-1 px-6 flex flex-1 justify-center py-5">
+        {/* Mobile Menu Button */}
+        <div className="md:hidden p-4">
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 rounded-md text-[#0e1b17] hover:bg-[#e7f3ef] transition-colors"
+            aria-label="Toggle menu"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div className="gap-1 px-4 md:px-6 flex flex-1 justify-center py-5">
           {/* Sidebar */}
-          <div className="layout-content-container flex flex-col w-80">
+          <div className={`layout-content-container flex-col w-80 ${isMobileMenuOpen ? 'flex' : 'hidden'} md:flex`}>
             <div className="flex h-full min-h-[700px] flex-col justify-between bg-[#f8fcfa] p-4">
               <div className="flex flex-col gap-4">
                 {/* Profile */}
                 <div className="flex gap-3">
-                  <div
-                    className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
-                    style={{
-                      backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuAbb3JT_hoptYFelIsrmvtiJd79mlz9GwKj44k6Rd8SKO-hNKR1ZxWibMXvckgjfi9XMd7VuwVsF8p6mSTow4mD7awJuPqc8aYCzLcQov2jAUsk8Wxpmy2i58GDScgB9aEhdSQy3rpQfF6rYhaLPTja583vZhgL4ndoQuXSXbliiXWGqe0qlvEoyGlf3pysqBDs2KS42Am0JdL0STw-9XAfHvQ1gzLdeh4_NktXa49njiU7Lz_-Y7rynGPQLFbCux-uFsz5w8xwQQJo")`,
-                    }}
-                  ></div>
+                  
                   <div className="flex flex-col">
                     <h1 className="text-[#0e1b17] text-base font-medium leading-normal">
                       {organization?.orgName || user?.fullName || "Organizer"}
@@ -184,7 +205,7 @@ const OrganizerDashboard = ({ viewOnly = false }) => {
             {/* Header */}
             <div className="flex flex-wrap justify-between gap-3 p-4">
               <div className="flex min-w-72 flex-col gap-3">
-                <p className="text-[#0e1b17] text-[32px] font-bold leading-tight">
+                <p className="text-[#0e1b17] text-2xl md:text-[32px] font-bold leading-tight">
                   Dashboard
                 </p>
                 <p className="text-[#4e977f] text-sm font-normal leading-normal">
@@ -203,20 +224,20 @@ const OrganizerDashboard = ({ viewOnly = false }) => {
               ].map((stat, i) => (
                 <div
                   key={i}
-                  className="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#d0e7df]"
+                  className="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-4 md:p-6 border border-[#d0e7df]"
                 >
-                  <p className="text-[#0e1b17] text-base font-medium leading-normal">
+                  <p className="text-[#0e1b17] text-sm md:text-base font-medium leading-normal">
                     {stat.label}
                   </p>
-                  <p className="text-[#0e1b17] text-2xl font-bold leading-tight">
+                  <p className="text-[#0e1b17] text-xl md:text-2xl font-bold leading-tight">
                     {loading ? "..." : stat.value}
                   </p>
                 </div>
               ))}
             </div>
 
-            {/* Events Organized Table */}
-            <h2 className="text-[#0e1b17] text-[22px] font-bold px-4 pb-3 pt-5">
+            {/* Events Organized */}
+            <h2 className="text-[#0e1b17] text-xl md:text-[22px] font-bold px-4 pb-3 pt-5">
               Events Organized
             </h2>
             <div className="px-4 py-3">
@@ -228,7 +249,65 @@ const OrganizerDashboard = ({ viewOnly = false }) => {
                 </div>
               ) : (
                 <div className="overflow-auto scrollbar-hide rounded-lg border border-[#d0e7df] bg-white">
-                  <table className="w-full">
+                  {/* Mobile View */}
+                  <div className="md:hidden space-y-4 p-4">
+                    {events.map((event) => {
+                      const status = getEventStatus(event.startDate, event.endDate);
+                      const statusColor = getStatusColor(status);
+                      
+                      return (
+                        <div key={event.id} className="border border-[#d0e7df] rounded-lg p-4">
+                          <div className="text-sm font-medium text-[#0e1b17] mb-2">
+                            {event.eventName}
+                          </div>
+                          <div className="text-sm text-[#4e977f] mb-3">
+                            {event.description?.substring(0, 50)}...
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                            <div>
+                              <div className="text-[#4e977f]">Date</div>
+                              <div>{formatDate(event.startDate)}</div>
+                            </div>
+                            <div>
+                              <div className="text-[#4e977f]">Location</div>
+                              <div>{event.location}</div>
+                            </div>
+                            <div>
+                              <div className="text-[#4e977f]">Volunteers</div>
+                              <div>{event.participants || 0}/{event.maxParticipants || 0}</div>
+                            </div>
+                            <div>
+                              <div className="text-[#4e977f]">Status</div>
+                              <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColor}`}>
+                                {status}
+                              </span>
+                            </div>
+                          </div>
+                          
+                          <div className="flex gap-2">
+                            <button 
+                              onClick={() => handleViewEvent(event.id)}
+                              className="flex-1 px-3 py-1 text-sm bg-[#14b881] text-white rounded hover:bg-[#0e9c6d] transition"
+                            >
+                              View
+                            </button>
+                            {isOwner && !viewOnly && (
+                              <button 
+                                onClick={() => handleDeleteEvent(event.id)}
+                                className="flex-1 px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-700 transition"
+                              >
+                                Delete
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Desktop View */}
+                  <table className="hidden md:table w-full">
                     <thead className="bg-[#f8fcfa]">
                       <tr>
                         {["Event Name", "Date", "Location", "Volunteers", "Status", "Actions"].map(

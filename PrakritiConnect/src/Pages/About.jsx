@@ -9,18 +9,18 @@ const About = () => {
     <div className="relative flex min-h-screen flex-col bg-[#f8fcfa] font-['Plus Jakarta Sans','Noto Sans',sans-serif]">
       <Header isAuthenticated={isAuthenticated} />
       
-      <div className="px-40 flex flex-1 justify-center py-10">
+      <div className="px-4 md:px-8 lg:px-40 flex flex-1 justify-center py-10">
         <div className="w-full max-w-6xl">
           {/* Hero Section */}
           <div className="text-center mb-12">
-            <h1 className="text-[#0e1b17] text-4xl font-bold mb-6">About PrakritiConnect</h1>
+            <h1 className="text-[#0e1b17] text-3xl md:text-4xl font-bold mb-6">About PrakritiConnect</h1>
             <p className="text-[#4e977f] text-lg max-w-3xl mx-auto">
               Connecting passionate volunteers with meaningful environmental initiatives to create sustainable change in our communities.
             </p>
           </div>
 
           {/* Mission Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16 ">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
             <div className="bg-gray-100 rounded-lg p-8">
               <h2 className="text-[#0e1b17] text-2xl font-bold mb-4">Our Mission</h2>
               <p className="text-[#4e977f] mb-6">
@@ -93,7 +93,6 @@ const About = () => {
               <a href="mailto:taranikrish7@gmail.com" className="bg-[#14b881] text-white px-6 py-3 rounded-lg hover:bg-[#0fa36d] transition-colors">
                 Email Us
               </a>
-              
             </div>
           </div>
         </div>

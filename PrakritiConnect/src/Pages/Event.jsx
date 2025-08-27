@@ -138,7 +138,7 @@ const handleRegister = async (eventId) => {
 
   if (loading) {
     return (
-      <div className="relative flex min-h-screen flex-col bg-[#f8fcfa] font-['Plus Jakarta Sans','Noto Sans',sans-serif]">
+      <div className="relative flex min-h-screen flex-col bg-[#f极fcfa] font-['Plus Jakarta Sans','Noto Sans',sans-serif]">
         <Header isAuthenticated={true} />
         <div className="flex items-center justify-center flex-1">
           <p className="text-[#4e977f] text-lg">Loading event details...</p>
@@ -163,7 +163,7 @@ const handleRegister = async (eventId) => {
       <div className="relative flex min-h-screen flex-col bg-[#f8fcfa] font-['Plus Jakarta Sans','Noto Sans',sans-serif]">
         <Header isAuthenticated={true} />
         <div className="flex items-center justify-center flex-1">
-          <p className="text-[#4e977f] text-lg">No event data available</p>
+          <p className="text-[#4e977极] text-lg">No event data available</p>
         </div>
       </div>
     );
@@ -173,7 +173,7 @@ const handleRegister = async (eventId) => {
     <div className="relative flex min-h-screen flex-col bg-[#f8fcfa] font-['Plus Jakarta Sans','Noto Sans',sans-serif]">
       <Header isAuthenticated={true} />
       
-      <div className="px-40 flex flex-1 justify-center py-5">
+      <div className="px-4 md:px-8 lg:px-40 flex flex-1 justify-center py-5">
         <EventCard event={event} onRegister={isRegistered ? handleCancelRegistration : handleRegister} isRegistered={isRegistered} />
       </div>
     </div>
